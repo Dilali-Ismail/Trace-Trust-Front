@@ -10,14 +10,21 @@ export class AuthService {
 
   accessToken = signal<string | null>(localStorage.getItem('access_token'));
   role = signal<UserRole | null>(localStorage.getItem('user_role') as UserRole);
+  userName = signal<string | null>(localStorage.getItem('user_name')); // 👈 Nouveau : pour stocker le nom
+
   constructor(private http: HttpClient, private router: Router) { }
+
   login(credentials: LoginRequest) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(res => {
         localStorage.setItem('access_token', res.accessToken);
         localStorage.setItem('user_role', res.role);
+        localStorage.setItem('user_name', res.email.split('@')[0]); // 👈 Pour l'instant on utilise le début de l'email
+
         this.accessToken.set(res.accessToken);
         this.role.set(res.role);
+        this.userName.set(res.email.split('@')[0]);
+
         this.redirectAfterLogin(res.role);
       })
     );

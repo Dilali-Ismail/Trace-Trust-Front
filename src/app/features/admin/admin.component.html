@@ -1,1 +1,51 @@
-<p>admin works!</p>
+<div class="flex h-screen bg-gray-100">
+    <!-- 1. BARRE LATÉRALE (SIDEBAR) -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col">
+        <div class="p-6 text-2xl font-bold border-b border-slate-800 text-blue-400">
+            TraceAndTrust
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2">
+            <a routerLink="/admin/dashboard" routerLinkActive="bg-slate-800 text-blue-400"
+                class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition">
+                <span class="mr-3">📊</span> Dashboard
+            </a>
+            <a routerLink="/admin/products" routerLinkActive="bg-slate-800 text-blue-400"
+                class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition">
+                <span class="mr-3">📦</span> Products
+            </a>
+            <a routerLink="/admin/warehouses" routerLinkActive="bg-slate-800 text-blue-400"
+                class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition">
+                <span class="mr-3">🏢</span> Warehouses
+            </a>
+            <a routerLink="/admin/users" routerLinkActive="bg-slate-800 text-blue-400"
+                class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition">
+                <span class="mr-3">👥</span> Users
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button (click)="logout()"
+                class="w-full flex items-center p-3 text-red-400 hover:bg-red-500/10 rounded-lg transition">
+                <span class="mr-3">🚪</span> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- 2. ZONE PRINCIPALE (HEADER + CONTENU) -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header simple -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8">
+            <h2 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Espace Administration</h2>
+            <div class="flex items-center space-x-4">
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">MODE : ADMIN</span>
+            </div>
+        </header>
+
+        <!-- ZONE DE CONTENU DYNAMIQUE -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-8">
+            <!-- C'est ici que les composants enfants (Dashboard, Products, etc.) vont s'afficher -->
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
