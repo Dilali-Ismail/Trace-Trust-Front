@@ -21,13 +21,16 @@ export const routes: Routes = [
           { path: 'dashboard', loadComponent: () => import('./features/admin/dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent) },
           { path: 'products', loadComponent: () => import('./features/admin/products/product-list/product-list.component').then(m => m.ProductListComponent) },
           { path: 'products/new', loadComponent: () => import('./features/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent) },
-          { path: 'products/edit/:id', loadComponent: () => import('./features/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent) }
+          { path: 'products/edit/:id', loadComponent: () => import('./features/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent) },
+          { path: 'warehouses', loadComponent: () => import('./features/admin/warehouses/warehouse-list/warehouse-list.component').then(m => m.WarehouseListComponent) },
+          { path: 'warehouses/new', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)},
+          { path: 'warehouses/edit/:id', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)}
         ]
       },
       {
         path: 'warehouse',
         canActivate: [roleGuard(['WAREHOUSE_MANAGER'])],
-        loadComponent: () => import('./features/warehouse/warehouse.component').then(m => m.WarehouseComponent)
+        loadComponent: () => import('./features/warehouse/warehouse.component').then(m => m.WarehouseComponent),
       },
       {
         path: 'client',

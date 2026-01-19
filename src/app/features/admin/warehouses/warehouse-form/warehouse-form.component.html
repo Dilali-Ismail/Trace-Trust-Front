@@ -1,0 +1,32 @@
+<div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+  <div class="mb-8">
+    <h2 class="text-3xl font-black text-gray-800">Nouvel <span class="text-blue-600">Entrepôt</span></h2>
+    <p class="text-gray-400 text-sm mt-1">Enregistrez une nouvelle zone logistique</p>
+  </div>
+  <form [formGroup]="warehouseForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <div class="space-y-2">
+      <label class="text-xs font-black uppercase tracking-widest text-gray-400">Code Identifiant</label>
+      <input type="text" formControlName="code" placeholder="Ex: WH-MARRAKECH"
+             class="w-full bg-gray-50 border-0 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 transition">
+      <p *ngIf="warehouseForm.get('code')?.touched && warehouseForm.get('code')?.invalid" class="text-red-500 text-xs font-bold">
+        Le code est obligatoire (min 3 caractères).
+      </p>
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs font-black uppercase tracking-widest text-gray-400">Nom de l'entrepôt</label>
+      <input type="text" formControlName="name" placeholder="Ex: Hub Logistique Sud"
+             class="w-full bg-gray-50 border-0 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 transition">
+    </div>
+    <div class="flex items-center p-4 bg-blue-50/50 rounded-xl">
+      <input type="checkbox" formControlName="active" id="active" class="w-5 h-5 text-blue-600 rounded">
+      <label for="active" class="ml-3 text-sm font-bold text-gray-700">Entrepôt actif dès la création</label>
+    </div>
+    <div class="flex items-center justify-end space-x-4 pt-4 border-t">
+      <a routerLink="/admin/warehouses" class="text-gray-400 font-bold hover:text-gray-600 transition">Annuler</a>
+      <button type="submit" [disabled]="warehouseForm.invalid"
+              class="bg-blue-600 text-white px-10 py-4 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 disabled:opacity-50 transition">
+        Créer l'entrepôt
+      </button>
+    </div>
+  </form>
+</div>
