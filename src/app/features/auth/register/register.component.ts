@@ -19,7 +19,6 @@ export class RegisterComponent {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['CLIENT', Validators.required] // Rôle par défaut
     });
   }
   onSubmit() {
@@ -29,15 +28,16 @@ export class RegisterComponent {
       return;
     }
     this.loading = true;
-    console.log('[Register] Calling AuthService.register...');
-    this.auth.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.message = "Compte créé ! Redirection vers la page de login...";
-        setTimeout(() => this.router.navigate(['/login']), 2000);
-      },
+    const userData = {
+      ...this.registerForm.value,
+      role: 'CLIENT'
+    };
+
+    this.auth.register(userData as any).subscribe({
+      next: () => this.router.navigate(['/login']),
       error: (err) => {
-        this.message = "Erreur lors de l'inscription.";
         this.loading = false;
+        this.message = "Erreur lors de l'inscription. L'email est peut-être déjà utilisé.";
       }
     });
   }

@@ -1,0 +1,31 @@
+<div class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+  <div class="mb-8">
+    <h2 class="text-3xl font-black text-gray-800">Nouveau <span class="text-blue-600">Manager</span></h2>
+    <p class="text-gray-400 text-sm mt-1">Créez un compte pour un gestionnaire d'entrepôt</p>
+  </div>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <div class="space-y-2">
+      <label class="text-xs font-black uppercase tracking-widest text-gray-400">Nom Complet</label>
+      <input type="text" formControlName="name" placeholder="Ex: Jean Dupont"
+             class="w-full bg-gray-50 border-0 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 transition">
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs font-black uppercase tracking-widest text-gray-400">Email Professionnel</label>
+      <input type="email" formControlName="email" placeholder="manager@traceandtrust.com"
+             class="w-full bg-gray-50 border-0 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 transition">
+    </div>
+    <div class="space-y-2">
+      <label class="text-xs font-black uppercase tracking-widest text-gray-400">Mot de passe temporaire</label>
+      <input type="password" formControlName="password" placeholder="••••••••"
+             class="w-full bg-gray-50 border-0 rounded-xl p-4 focus:ring-2 focus:ring-blue-500 transition">
+      <p class="text-[10px] text-gray-400 italic">Le manager pourra changer son mot de passe plus tard.</p>
+    </div>
+    <div class="flex items-center justify-end space-x-4 pt-4 border-t">
+      <a routerLink="/admin/users" class="text-gray-400 font-bold hover:text-gray-600 transition">Annuler</a>
+      <button type="submit" [disabled]="userForm.invalid"
+              class="bg-blue-600 text-white px-10 py-4 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 disabled:opacity-50 transition">
+        Créer le compte Manager
+      </button>
+    </div>
+  </form>
+</div>

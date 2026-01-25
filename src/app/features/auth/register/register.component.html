@@ -26,16 +26,6 @@
         class="text-xs text-red-500 mt-1">Min. 6 caractères.</p>
     </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Rôle</label>
-      <select formControlName="role"
-        class="mt-1 block w-full px-4 py-2 rounded-lg border-gray-300 bg-gray-50 focus:ring-blue-500">
-        <option value="CLIENT">Client</option>
-        <option value="WAREHOUSE_MANAGER">Gestionnaire Entrepôt</option>
-        <option value="ADMIN">Administrateur</option>
-      </select>
-    </div>
-
     <p *ngIf="message" class="text-center text-sm"
       [ngClass]="message.includes('Erreur') || message.includes('Veuillez') ? 'text-red-500' : 'text-green-500'">{{
       message }}</p>

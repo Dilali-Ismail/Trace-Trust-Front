@@ -10,15 +10,14 @@ export class ProductService {
   getAll(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
-  // Création avec Image
+
   create(product: Product, image?: File): Observable<Product> {
     const formData = new FormData();
-    // On transforme l'objet produit en texte JSON car le backend l'attend en @RequestPart String
+
     formData.append('product', JSON.stringify(product));
     if (image) formData.append('image', image);
     return this.http.post<Product>(this.apiUrl, formData);
   }
-  // Modification avec Image
   update(id: string, product: Product, image?: File): Observable<Product> {
     const formData = new FormData();
     formData.append('product', JSON.stringify(product));

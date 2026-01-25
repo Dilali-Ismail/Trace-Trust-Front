@@ -24,7 +24,9 @@ export const routes: Routes = [
           { path: 'products/edit/:id', loadComponent: () => import('./features/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent) },
           { path: 'warehouses', loadComponent: () => import('./features/admin/warehouses/warehouse-list/warehouse-list.component').then(m => m.WarehouseListComponent) },
           { path: 'warehouses/new', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)},
-          { path: 'warehouses/edit/:id', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)}
+          { path: 'warehouses/edit/:id', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)},
+          { path: 'users', loadComponent: () => import('./features/admin/users/user-list/user-list.component').then(m => m.UserListComponent) },
+          { path: 'users/new', loadComponent: () => import('./features/admin/users/user-form/user-form.component').then(m => m.UserFormComponent)}
         ]
       },
       {
