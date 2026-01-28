@@ -4,52 +4,75 @@
 
     <!-- dropdown de sélection d'entrepôt -->
     <select (change)="loadInventory()" [(ngModel)]="selectedWarehouseId"
-            class="bg-white border-gray-200 rounded-xl px-4 py-2 text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
+      class="bg-white border-gray-200 rounded-xl px-4 py-2 text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
       <option value="">Tous les entrepôts</option>
       @for (w of warehouses(); track w.id) {
-        <option [value]="w.id">{{ w.name }}</option>
+      <option [value]="w.id">{{ w.name }}</option>
       }
     </select>
   </div>
   <!-- Barre de recherche SKU -->
   <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
     <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par SKU..."
-           class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+      class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
   </div>
   <!-- Tableau des stocks -->
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-gray-700">
     <table class="w-full text-left font-medium">
-      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase tracking-widest font-black">
+      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase tracking-widest font-black border-b border-gray-100">
         <tr>
           <th class="px-6 py-4">Produit / SKU</th>
           <th class="px-6 py-4">Entrepôt</th>
-          <th class="px-6 py-4 text-center">En main (Hand)</th>
+          <th class="px-6 py-4 text-center">Quantité Hand</th>
           <th class="px-6 py-4 text-center">Réservé</th>
+          <th class="px-6 py-4 text-center">Historique</th>
           <th class="px-6 py-4 text-right">Disponible</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-100">
         @for (item of filteredInventory(); track item.inventoryId) {
-          <tr class="hover:bg-blue-50/50 transition">
-            <td class="px-6 py-4">
-               <!-- On n'a pas le nom du produit dans le DTO, on affiche le SKU en attendant -->
-              <div class="font-bold text-gray-900">Produit SKU</div>
-              <div class="text-[10px] font-mono text-gray-400 uppercase">{{ item.productSku }}</div>
-            </td>
-            <td class="px-6 py-4">
-              <span class="text-xs bg-gray-100 px-2 py-1 rounded font-bold uppercase">{{ item.warehouseCode }}</span>
-            </td>
-            <td class="px-6 py-4 text-center font-bold">{{ item.quantity_hand }}</td>
-            <td class="px-6 py-4 text-center text-orange-500 font-bold">- {{ item.quantity_reserved }}</td>
-            <td class="px-6 py-4 text-right">
-              <span [class]="item.available <= 0 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'"
-                    class="px-4 py-1.5 rounded-lg font-black shadow-sm">
-                {{ item.available }}
-              </span>
-            </td>
-          </tr>
+        <tr class="hover:bg-blue-50/50 transition">
+          <td class="px-6 py-4">
+            <div class="font-bold text-gray-900">
+              {{ productNames().get(item.productSku) || 'Chargement...' }}
+            </div>
+            <div class="text-[10px] font-mono text-gray-400 uppercase tracking-tighter">{{ item.productSku }}</div>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-[10px] bg-slate-100 px-2 py-1 rounded font-black uppercase text-slate-500">{{
+              item.warehouseCode }}</span>
+          </td>
+          <td class="px-6 py-4 text-center font-bold text-gray-800">{{ item.quantity_hand }}</td>
+          <td class="px-6 py-4 text-center">
+            <span class="text-orange-500 font-bold bg-orange-50 px-2 py-1 rounded-md text-xs">
+              {{ item.quantity_reserved }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <a [routerLink]="['/warehouse/movements']"
+              [queryParams]="{ warehouseId: item.warehouseId, productId: item.productId }"
+              class="inline-flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-sm"
+              title="Historique détaillé">
+              <span class="text-sm">📊</span>
+            </a>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <span
+              [class]="item.available <= 0 ? 'bg-rose-50 text-rose-600 ring-1 ring-rose-100' : 'bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100'"
+              class="px-3 py-1.5 rounded-lg font-black text-sm shadow-sm inline-block min-w-[3rem] text-center">
+              {{ item.available }}
+            </span>
+          </td>
+        </tr>
         } @empty {
-          <tr><td colspan="5" class="px-6 py-20 text-center text-gray-400 italic font-medium">Aucun stock répertorié.</td></tr>
+        <tr>
+          <td colspan="6" class="px-6 py-20 text-center text-gray-400 italic font-medium">
+            <div class="flex flex-col items-center">
+              <span class="text-4xl mb-2">📦</span>
+              Aucun stock répertorié pour le moment.
+            </div>
+          </td>
+        </tr>
         }
       </tbody>
     </table>
