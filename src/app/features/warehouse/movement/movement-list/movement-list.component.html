@@ -1,0 +1,94 @@
+<div class="space-y-8 animate-in fade-in duration-500">
+  <h1 class="text-3xl font-black text-gray-800 tracking-tight">Flux de <span class="text-blue-600">Stock</span></h1>
+  <!-- 🏗️ FORMULAIRE DE CRÉATION RAPIDE -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <h2 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-6 flex items-center">
+      <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+      Enregistrer un nouveau mouvement
+    </h2>
+
+    <form [formGroup]="movementForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+      <!-- Choix Entrepôt -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-1">Entrepôt</label>
+        <select formControlName="warehouseId" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500">
+          <option value="">Sélectionner...</option>
+          @for (w of warehouses(); track w.id) {
+            <option [value]="w.id">{{ w.name }}</option>
+          }
+        </select>
+      </div>
+      <!-- Choix Produit -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-1">Produit</label>
+        <select formControlName="productId" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500">
+          <option value="">Sélectionner...</option>
+          @for (p of products(); track p.id) {
+            <option [value]="p.id">{{ p.name }} ({{ p.sku }})</option>
+          }
+        </select>
+      </div>
+      <!-- Type & Quantité -->
+      <div class="flex gap-2 lg:col-span-2">
+        <div class="flex-1 space-y-1">
+          <label class="text-[10px] font-black uppercase text-gray-400 ml-1">Type</label>
+          <select formControlName="type" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500">
+            <option value="INBOUND">Entrée (IN)</option>
+            <option value="OUTBOUND">Sortie (OUT)</option>
+            <option value="ADJUSTMENT">Ajustement</option>
+          </select>
+        </div>
+        <div class="w-24 space-y-1">
+          <label class="text-[10px] font-black uppercase text-gray-400 ml-1">Qté</label>
+          <input type="number" formControlName="quantity" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+      </div>
+      <!-- Bouton Valider -->
+      <button type="submit" [disabled]="movementForm.invalid"
+              class="bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-100 disabled:opacity-50">
+        Valider
+      </button>
+    </form>
+  </div>
+  <!-- 📜 HISTORIQUE DES MOUVEMENTS -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase tracking-widest font-black border-b border-gray-100">
+        <tr>
+          <th class="px-6 py-4">Date</th>
+          <th class="px-6 py-4">Type</th>
+          <th class="px-6 py-4">SKU Produit</th>
+          <th class="px-6 py-4">Entrepôt</th>
+          <th class="px-6 py-4 text-center">Quantité</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (m of movements(); track m.id) {
+          <tr class="hover:bg-blue-50/50 transition">
+            <td class="px-6 py-4 text-xs font-bold text-gray-400">
+              {{ m.occurredAt | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td class="px-6 py-4">
+              <span [ngClass]="{
+                'bg-emerald-50 text-emerald-600': m.type === 'INBOUND',
+                'bg-rose-50 text-rose-600': m.type === 'OUTBOUND',
+                'bg-amber-50 text-amber-600': m.type === 'ADJUSTMENT'
+              }" class="px-2 py-1 rounded text-[10px] font-black uppercase tracking-tighter">
+                {{ m.type }}
+              </span>
+            </td>
+            <td class="px-6 py-4 font-bold text-gray-800">{{ m.productSku }}</td>
+            <td class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase">{{ m.warehouseName }}</td>
+            <td class="px-6 py-4 text-center font-black text-lg">
+              <span [class.text-rose-500]="m.type === 'OUTBOUND'" [class.text-emerald-500]="m.type === 'INBOUND'">
+                {{ m.type === 'OUTBOUND' ? '-' : '+' }}{{ m.quantity }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">Aucun mouvement pour le moment.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

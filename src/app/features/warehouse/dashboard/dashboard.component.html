@@ -1,0 +1,52 @@
+<div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+  <!-- 1. SALUTATION & INFOS DÉPÔT -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+    <div>
+      <h1 class="text-2xl font-black text-gray-800">
+        Bienvenue, <span class="text-blue-600">{{ authService.userName() }}</span>
+      </h1>
+      <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mt-1">Superviseur de l'Entrepôt de Casablanca</p>
+    </div>
+    <div class="bg-blue-50 px-4 py-2 rounded-xl text-blue-600 text-sm font-bold flex items-center">
+      <span class="mr-2">📅</span> {{ today | date:'dd MMMM yyyy' : '' : 'fr' }}
+      <!-- Note : Pense à ajouter "today = new Date();" dans ton TS si tu veux la date réelle -->
+    </div>
+  </div>
+  <!-- 2. KPIs STATS -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    @for (s of stats; track s.label) {
+      <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:scale-105 transition duration-300">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-2xl">{{ s.icon }}</span>
+          <span class="bg-gray-50 text-[10px] text-gray-400 font-black uppercase px-2 py-1 rounded-md">{{ s.label }}</span>
+        </div>
+        <div class="text-3xl font-black text-gray-800">{{ s.value }}</div>
+      </div>
+    }
+  </div>
+  <!-- 3. ZONE D'ALERTE CRITIQUE -->
+  <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="p-6 border-b border-gray-50 flex items-center justify-between">
+      <h3 class="font-black text-gray-800 flex items-center">
+        <span class="w-2 h-2 bg-red-500 rounded-full mr-3 animate-pulse"></span>
+        Alertes Stock Critique
+      </h3>
+      <span class="text-[10px] font-black bg-red-50 text-red-500 px-3 py-1 rounded-full uppercase">Action requise</span>
+    </div>
+
+    <div class="divide-y divide-gray-50">
+      @for (item of alerts; track item.sku) {
+        <div class="p-4 flex items-center justify-between hover:bg-red-50/30 transition">
+          <div>
+            <div class="font-bold text-gray-800">{{ item.name }}</div>
+            <div class="text-[10px] font-mono text-gray-400">{{ item.sku }}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-sm font-black text-red-600">{{ item.stock }} restants</div>
+            <div class="text-[10px] text-gray-400">Seuil min : {{ item.min }}</div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="space-y-6">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <h1 class="text-3xl font-black text-gray-800">Inventaire <span class="text-blue-600">Global</span></h1>
+
+    <!-- dropdown de sélection d'entrepôt -->
+    <select (change)="loadInventory()" [(ngModel)]="selectedWarehouseId"
+            class="bg-white border-gray-200 rounded-xl px-4 py-2 text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="">Tous les entrepôts</option>
+      @for (w of warehouses(); track w.id) {
+        <option [value]="w.id">{{ w.name }}</option>
+      }
+    </select>
+  </div>
+  <!-- Barre de recherche SKU -->
+  <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par SKU..."
+           class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+  </div>
+  <!-- Tableau des stocks -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-gray-700">
+    <table class="w-full text-left font-medium">
+      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase tracking-widest font-black">
+        <tr>
+          <th class="px-6 py-4">Produit / SKU</th>
+          <th class="px-6 py-4">Entrepôt</th>
+          <th class="px-6 py-4 text-center">En main (Hand)</th>
+          <th class="px-6 py-4 text-center">Réservé</th>
+          <th class="px-6 py-4 text-right">Disponible</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (item of filteredInventory(); track item.inventoryId) {
+          <tr class="hover:bg-blue-50/50 transition">
+            <td class="px-6 py-4">
+               <!-- On n'a pas le nom du produit dans le DTO, on affiche le SKU en attendant -->
+              <div class="font-bold text-gray-900">Produit SKU</div>
+              <div class="text-[10px] font-mono text-gray-400 uppercase">{{ item.productSku }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="text-xs bg-gray-100 px-2 py-1 rounded font-bold uppercase">{{ item.warehouseCode }}</span>
+            </td>
+            <td class="px-6 py-4 text-center font-bold">{{ item.quantity_hand }}</td>
+            <td class="px-6 py-4 text-center text-orange-500 font-bold">- {{ item.quantity_reserved }}</td>
+            <td class="px-6 py-4 text-right">
+              <span [class]="item.available <= 0 ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'"
+                    class="px-4 py-1.5 rounded-lg font-black shadow-sm">
+                {{ item.available }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="px-6 py-20 text-center text-gray-400 italic font-medium">Aucun stock répertorié.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

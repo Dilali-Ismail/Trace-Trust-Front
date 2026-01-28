@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 import { roleGuard } from './core/guards/role.guard';
 import { AdminComponent } from './features/admin/admin.component';
+import { WarehouseComponent } from './features/warehouse/warehouse.component';
 export const routes: Routes = [
   {
     path: '',
@@ -23,16 +24,22 @@ export const routes: Routes = [
           { path: 'products/new', loadComponent: () => import('./features/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent) },
           { path: 'products/edit/:id', loadComponent: () => import('./features/admin/products/product-form/product-form.component').then(m => m.ProductFormComponent) },
           { path: 'warehouses', loadComponent: () => import('./features/admin/warehouses/warehouse-list/warehouse-list.component').then(m => m.WarehouseListComponent) },
-          { path: 'warehouses/new', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)},
-          { path: 'warehouses/edit/:id', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent)},
+          { path: 'warehouses/new', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent) },
+          { path: 'warehouses/edit/:id', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent) },
           { path: 'users', loadComponent: () => import('./features/admin/users/user-list/user-list.component').then(m => m.UserListComponent) },
-          { path: 'users/new', loadComponent: () => import('./features/admin/users/user-form/user-form.component').then(m => m.UserFormComponent)}
+          { path: 'users/new', loadComponent: () => import('./features/admin/users/user-form/user-form.component').then(m => m.UserFormComponent) }
         ]
       },
       {
         path: 'warehouse',
         canActivate: [roleGuard(['WAREHOUSE_MANAGER'])],
-        loadComponent: () => import('./features/warehouse/warehouse.component').then(m => m.WarehouseComponent),
+        component: WarehouseComponent,
+        children: [
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          { path: 'dashboard', loadComponent: () => import('./features/warehouse/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+          { path: 'inventory', loadComponent: () => import('./features/warehouse/inventory/inventory-list/inventory-list.component').then(m => m.InventoryListComponent) },
+          { path: 'movements', loadComponent: () => import('./features/warehouse/movement/movement-list/movement-list.component').then(m => m.MovementListComponent) },
+        ]
       },
       {
         path: 'client',
