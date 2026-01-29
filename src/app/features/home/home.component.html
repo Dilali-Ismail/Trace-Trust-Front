@@ -40,7 +40,7 @@
 
         <div class="flex items-center justify-between mt-2 px-1">
           <span class="text-xl font-black text-blue-600">{{ product.costPrice }} DH</span>
-          <button class="bg-gray-50 text-gray-900 p-2.5 rounded-xl hover:bg-slate-900 hover:text-white transition transform active:scale-95 shadow-sm">
+          <button (click)="addToCart(product)" class="bg-gray-50 text-gray-900 p-2.5 rounded-xl hover:bg-slate-900 hover:text-white transition transform active:scale-95 shadow-sm">
             🛒
           </button>
         </div>

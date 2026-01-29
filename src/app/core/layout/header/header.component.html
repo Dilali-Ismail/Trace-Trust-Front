@@ -4,15 +4,30 @@
       <div class="flex items-center">
         <a routerLink="/" class="text-xl font-bold">TraceAndTrust</a>
       </div>
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-6">
         <a routerLink="/" class="hover:text-blue-200">Accueil</a>
+
+        <!-- PANIER 🛒 -->
+        <a routerLink="/client/checkout"
+          class="relative group flex items-center p-2 hover:bg-blue-700 rounded-xl transition">
+          <span class="text-xl">🛒</span>
+          @if (cartService.count() > 0) {
+          <span
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-sm animate-bounce">
+            {{ cartService.count() }}
+          </span>
+          }
+        </a>
+
         <div *ngIf="!authService.accessToken()" class="space-x-4">
           <a routerLink="/login" class="hover:text-blue-200">Connexion</a>
           <a routerLink="/register" class="bg-white text-blue-600 px-4 py-2 rounded-md font-medium">S'inscrire</a>
         </div>
         <div *ngIf="authService.accessToken()" class="flex items-center space-x-4">
-          <span class="text-sm italic">Connecté en tant que {{ authService.role() }}</span>
-          <button (click)="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-sm">Déconnexion</button>
+          <a routerLink="/client" class="text-sm border-b border-transparent hover:border-white transition italic">Mes
+            Commandes</a>
+          <button (click)="logout()"
+            class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-sm">Déconnexion</button>
         </div>
       </div>
     </div>

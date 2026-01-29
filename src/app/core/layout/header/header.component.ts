@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { CartService } from '../../../features/client/services/cart.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -10,7 +11,8 @@ import { AuthService } from '../../auth/auth.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(public authService: AuthService) {}
+  public authService = inject(AuthService);
+  public cartService = inject(CartService);
 
   logout() {
     this.authService.logout();

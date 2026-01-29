@@ -44,7 +44,10 @@ export const routes: Routes = [
       {
         path: 'client',
         canActivate: [roleGuard(['CLIENT'])],
-        loadComponent: () => import('./features/client/client.component').then(m => m.ClientComponent)
+        children: [
+          { path: '', loadComponent: () => import('./features/client/client.component').then(m => m.ClientComponent) },
+          { path: 'checkout', loadComponent: () => import('./features/client/checkout/checkout.component').then(m => m.CheckoutComponent) }
+        ]
       },
     ]
   }
