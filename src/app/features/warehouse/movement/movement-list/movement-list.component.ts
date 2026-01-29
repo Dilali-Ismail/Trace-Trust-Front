@@ -32,7 +32,10 @@ export class MovementListComponent implements OnInit {
     referenceDocument: ['']
   });
   ngOnInit() {
-     this.route.queryParams.subscribe(params => {
+    this.warehouseService.getAll().subscribe(data => this.warehouses.set(data));
+    this.productService.getAll().subscribe(data => this.products.set(data));
+
+    this.route.queryParams.subscribe(params => {
       const wId = params['warehouseId'];
       const pId = params['productId'];
       this.loadHistory(wId, pId);

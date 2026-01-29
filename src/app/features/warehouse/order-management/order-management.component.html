@@ -1,0 +1,48 @@
+<div class="p-8 space-y-6">
+  <h1 class="text-3xl font-black">Traitement des Commandes 📦</h1>
+  <div class="grid gap-4">
+    @for (order of orders(); track order.id) {
+    <div class="bg-white p-6 rounded-3xl border border-gray-100 flex items-center justify-between shadow-sm">
+      <div class="space-y-1">
+        <p class="text-xs font-mono text-gray-400">#{{ order.id.substring(0,8) }}</p>
+        <p class="font-bold">{{ order.orderLines.length }} articles</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <select [(ngModel)]="selectedWhSelection[order.id]" class="p-2 border rounded-xl text-xs font-bold bg-gray-50">
+          <option value="">-- Choisir Entrepôt --</option>
+          @for (w of warehouses(); track w.id) {
+          <option [value]="w.id">{{ w.name }}</option>
+          }
+        </select>
+        <button (click)="doReserve(order)"
+          class="bg-slate-900 text-white px-6 py-2 rounded-xl text-xs font-black uppercase">
+          Réserver Stock
+        </button>
+        <button (click)="toggleDetails(order.id)"
+          class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition font-bold">
+          {{ expandedOrderId() === order.id ? '🔼' : '👁️' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- 🔍 DÉTAILS ARTICLES POUR LE MANAGER -->
+    @if (expandedOrderId() === order.id) {
+    <div
+      class="bg-white/50 -mt-4 p-6 rounded-b-3xl border-x border-b border-gray-100 animate-in slide-in-from-top-2 duration-300">
+      <p class="text-[10px] font-black uppercase text-gray-400 mb-3 tracking-widest">Articles à préparer</p>
+      <div class="grid grid-cols-3 gap-4">
+        @for (line of order.orderLines; track line.productId) {
+        <div class="bg-white p-3 rounded-2xl border border-gray-50 shadow-sm">
+          <p class="text-[10px] text-blue-600 font-bold">{{ line.productSku }}</p>
+          <p class="text-xs font-black text-gray-800">{{ line.productName || 'Produit' }}</p>
+          <p class="text-lg font-black mt-1">Qté: {{ line.quantity }}</p>
+        </div>
+        }
+      </div>
+    </div>
+    }
+    } @empty {
+    <p class="text-center text-gray-400 py-10 italic">Aucune commande en attente de traitement.</p>
+    }
+  </div>
+</div>

@@ -11,15 +11,20 @@ import { SalesOrder } from '../../core/models/order.models';
 export class ClientComponent implements OnInit {
   private orderService = inject(OrderService);
   orders = signal<SalesOrder[]>([]);
+  expandedOrderId = signal<string | null>(null);
+
   ngOnInit() {
     this.orderService.getMyOrders().subscribe(data => {
-      // On enrichit les données si le totalAmount est manquant
-      const enrichedOrders = data.map(order => ({
-        ...order,
-        totalAmount: order.totalAmount || this.calculateTotal(order)
+      const enriched = data.map(o => ({
+        ...o,
+        totalAmount: o.totalAmount || this.calculateTotal(o)
       }));
-      this.orders.set(enrichedOrders);
+      this.orders.set(enriched);
     });
+  }
+
+  toggleDetails(id: string) {
+    this.expandedOrderId.set(this.expandedOrderId() === id ? null : id);
   }
 
   private calculateTotal(order: SalesOrder): number {

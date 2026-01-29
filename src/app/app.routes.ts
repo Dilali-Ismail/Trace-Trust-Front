@@ -39,6 +39,7 @@ export const routes: Routes = [
           { path: 'dashboard', loadComponent: () => import('./features/warehouse/dashboard/dashboard.component').then(m => m.DashboardComponent) },
           { path: 'inventory', loadComponent: () => import('./features/warehouse/inventory/inventory-list/inventory-list.component').then(m => m.InventoryListComponent) },
           { path: 'movements', loadComponent: () => import('./features/warehouse/movement/movement-list/movement-list.component').then(m => m.MovementListComponent) },
+          { path: 'orders', loadComponent: () => import('./features/warehouse/order-management/order-management.component').then(m => m.OrderManagementComponent) },
         ]
       },
       {

@@ -21,15 +21,21 @@
         class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
         <span class="mr-3 group-hover:scale-110 transition">🔄</span> Flux de Stock
       </a>
+
+      <a routerLink="/warehouse/orders" routerLinkActive="bg-slate-800 text-blue-400"
+        class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
+        <span class="mr-3 group-hover:scale-110 transition">📦</span> Traitement Commandes
+      </a>
     </nav>
 
     <div class="p-4 border-t border-slate-800">
-      <button (click)="logout()" class="w-full flex items-center p-3 text-red-400 hover:bg-red-500/10 rounded-lg transition">
+      <button (click)="logout()"
+        class="w-full flex items-center p-3 text-red-400 hover:bg-red-500/10 rounded-lg transition">
         <span class="mr-3">🚪</span> Déconnexion
       </button>
     </div>
   </aside>
- 
+
   <main class="flex-1 flex flex-col overflow-hidden">
     <!-- Header -->
     <header class="bg-white border-b border-gray-100 p-4 flex justify-between items-center px-8">
@@ -41,14 +47,15 @@
           <p class="text-sm font-black text-gray-800 leading-none">{{ authService.userName() }}</p>
           <p class="text-[10px] text-blue-600 font-bold uppercase">Gestionnaire</p>
         </div>
-        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs shadow-inner">
+        <div
+          class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs shadow-inner">
           {{ authService.userName()?.charAt(0) }}
         </div>
       </div>
     </header>
     <!-- Zone de rendu des pages enfants -->
     <div class="flex-1 overflow-y-auto p-8">
-       <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </div>
   </main>
 </div>

@@ -10,15 +10,60 @@
         <p class="text-[10px] text-gray-500 font-medium">🛒 {{ order.orderLines.length }} articles • Passée le {{
           order.createdAt | date:'short' }}</p>
       </div>
-      <div class="flex items-center gap-4">
-        <span [class]="'px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ' +
+      <div class="flex flex-col items-end gap-3">
+        <div class="flex items-center gap-3">
+          <span [class]="'px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ' +
                          (order.status === 'CREATED' ? 'bg-blue-50 text-blue-600' :
-                          order.status === 'CANCELLED' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600')">
-          {{ order.status }}
-        </span>
-        <button class="p-2 text-gray-400 hover:text-blue-600">👁️ Détails</button>
+                          order.status === 'RESERVED' ? 'bg-green-50 text-green-600' :
+                          order.status === 'CANCELLED' ? 'bg-red-50 text-red-600' : 'bg-gray-50 text-gray-600')">
+            {{ order.status }}
+          </span>
+
+          <button (click)="toggleDetails(order.id)"
+            class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition">
+            {{ expandedOrderId() === order.id ? '🔼' : '👁️' }}
+          </button>
+        </div>
+
+        <!-- Affichage des Backorders (Reliquats) -->
+        @if (order.backorders && order.backorders.length > 0) {
+        <div class="bg-orange-50 p-3 rounded-2xl border border-orange-100 w-full max-w-[250px]">
+          <p class="text-[9px] font-black text-orange-600 uppercase mb-1 flex items-center gap-1">
+            <span>📦</span> <span class="underline">En attente de stock</span>
+          </p>
+          @for (bo of order.backorders; track bo.salesOrderLineId) {
+          <p class="text-[10px] text-orange-700 font-bold flex justify-between">
+            <span>{{ bo.productSku }}</span>
+            <span>{{ bo.quantityPending }} units</span>
+          </p>
+          }
+        </div>
+        }
       </div>
     </div>
+
+    <!-- 🔍 SECTION DÉTAILS (ARTICLES) -->
+    @if (expandedOrderId() === order.id) {
+    <div
+      class="bg-gray-50/50 -mt-2 p-6 rounded-b-3xl border-x border-b border-gray-100 animate-in slide-in-from-top-4 duration-300">
+      <h3 class="text-[10px] font-black uppercase text-gray-400 mb-4 tracking-widest">Articles commandés</h3>
+      <div class="space-y-3">
+        @for (line of order.orderLines; track line.productId) {
+        <div class="flex justify-between items-center text-sm">
+          <div class="flex items-center gap-3">
+            <span
+              class="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-400">#</span>
+            <div>
+              <p class="font-bold text-gray-700">{{ line.productName || line.productSku }}</p>
+              <p class="text-[10px] text-gray-400">{{ line.unitPrice }} DH x {{ line.quantity }}</p>
+            </div>
+          </div>
+          <p class="font-black text-slate-900">{{ line.unitPrice * line.quantity }} DH</p>
+        </div>
+        }
+      </div>
+    </div>
+    }
     } @empty {
     <div class="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-100">
       <p class="text-gray-400 font-bold italic">Vous n'avez pas encore de commandes.</p>
