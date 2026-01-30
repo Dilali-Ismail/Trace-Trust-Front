@@ -40,6 +40,7 @@ export const routes: Routes = [
           { path: 'inventory', loadComponent: () => import('./features/warehouse/inventory/inventory-list/inventory-list.component').then(m => m.InventoryListComponent) },
           { path: 'movements', loadComponent: () => import('./features/warehouse/movement/movement-list/movement-list.component').then(m => m.MovementListComponent) },
           { path: 'orders', loadComponent: () => import('./features/warehouse/order-management/order-management.component').then(m => m.OrderManagementComponent) },
+            { path: 'shipments', loadComponent: () => import('./features/warehouse/shipment-management/shipment-management.component').then(m => m.ShipmentManagementComponent) }
         ]
       },
       {
@@ -47,7 +48,8 @@ export const routes: Routes = [
         canActivate: [roleGuard(['CLIENT'])],
         children: [
           { path: '', loadComponent: () => import('./features/client/client.component').then(m => m.ClientComponent) },
-          { path: 'checkout', loadComponent: () => import('./features/client/checkout/checkout.component').then(m => m.CheckoutComponent) }
+          { path: 'checkout', loadComponent: () => import('./features/client/checkout/checkout.component').then(m => m.CheckoutComponent) },
+          { path: 'shipments', loadComponent: () => import('./features/client/shipments/shipments.component').then(m => m.ShipmentsComponent) }
         ]
       },
     ]

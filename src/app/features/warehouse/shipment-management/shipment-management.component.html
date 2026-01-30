@@ -1,0 +1,85 @@
+<div class="p-8 space-y-8">
+  <h1 class="text-3xl font-black">Gestion des Expéditions 🚚</h1>
+  <!-- Formulaire de Création -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <h2 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-6">Créer une nouvelle expédition</h2>
+    <form [formGroup]="shipmentForm" (ngSubmit)="createShipment()" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+      <!-- Commande -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-1">Commande</label>
+        <select formControlName="salesOrderId" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm">
+          <option value="">Sélectionner...</option>
+          @for (order of reservedOrders(); track order.id) {
+            <option [value]="order.id">#{{ order.id.substring(0,8) }}</option>
+          }
+        </select>
+      </div>
+      <!-- Transporteur -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-1">Transporteur</label>
+        <select formControlName="carrierId" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm">
+          <option value="">Sélectionner...</option>
+          @for (c of carriers(); track c.id) {
+            <option [value]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+      <!-- Tracking Number -->
+      <div class="space-y-1">
+        <label class="text-[10px] font-black uppercase text-gray-400 ml-1">N° Tracking</label>
+        <input formControlName="trackingNumber" class="w-full bg-gray-50 border-0 rounded-xl p-3 text-sm">
+      </div>
+      <!-- Bouton -->
+      <button type="submit" [disabled]="shipmentForm.invalid"
+              class="bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50">
+        Créer
+      </button>
+    </form>
+  </div>
+  <!-- Liste des Expéditions -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase tracking-widest font-black">
+        <tr>
+          <th class="px-6 py-4">Tracking</th>
+          <th class="px-6 py-4">Transporteur</th>
+          <th class="px-6 py-4">Statut</th>
+          <th class="px-6 py-4">Créée le</th>
+          <th class="px-6 py-4 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (s of shipments(); track s.id) {
+        <tr class="hover:bg-blue-50/50 transition">
+          <td class="px-6 py-4 font-mono text-sm font-bold">{{ s.trackingNumber }}</td>
+          <td class="px-6 py-4 text-sm font-bold text-gray-700">{{ s.carrierName }}</td>
+          <td class="px-6 py-4">
+            <span [class]="'px-2 py-1 rounded text-[10px] font-black uppercase ' +
+                          (s.status === 'PLANNED' ? 'bg-blue-50 text-blue-600' :
+                           s.status === 'IN_TRANSIT' ? 'bg-orange-50 text-orange-600' : 'bg-green-50 text-green-600')">
+              {{ s.status }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-xs text-gray-400">{{ s.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="px-6 py-4 text-center">
+            @if (s.status === 'PLANNED') {
+              <button (click)="dispatchShipment(s.id)"
+                      class="bg-orange-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-orange-700">
+                Expédier
+              </button>
+            }
+            @if (s.status === 'IN_TRANSIT') {
+              <button (click)="markDelivered(s.id)"
+                      class="bg-green-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-green-700">
+                Marquer livré
+              </button>
+            }
+          </td>
+        </tr>
+        } @empty {
+        <tr><td colspan="5" class="px-6 py-10 text-center text-gray-400 italic">Aucune expédition.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

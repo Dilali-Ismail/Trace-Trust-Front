@@ -26,6 +26,9 @@
         <div *ngIf="authService.accessToken()" class="flex items-center space-x-4">
           <a routerLink="/client" class="text-sm border-b border-transparent hover:border-white transition italic">Mes
             Commandes</a>
+          <a routerLink="/client/shipments"
+            class="text-sm border-b border-transparent hover:border-white transition italic">Mes
+            Expéditions 📦</a>
           <button (click)="logout()"
             class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-sm">Déconnexion</button>
         </div>
