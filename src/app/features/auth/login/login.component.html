@@ -1,24 +1,129 @@
-<div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md border border-gray-100">
-  <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Connexion</h2>
+<!-- 🎨 Premium 2026 Light Mode Login Page - E-commerce Style -->
+<div
+  class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-violet-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Email</label>
-      <input type="email" formControlName="email"
-        class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50">
+  <!-- Decorative elements -->
+  <div
+    class="absolute top-0 left-0 w-96 h-96 bg-violet-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 -translate-x-1/2">
+  </div>
+  <div
+    class="absolute bottom-0 right-0 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-30 translate-y-1/2 translate-x-1/2">
+  </div>
+
+  <div class="relative w-full max-w-md">
+
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-8 sm:p-10">
+
+      <!-- Logo & Header -->
+      <div class="text-center mb-8">
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-violet-500 rounded-2xl shadow-button mb-4">
+          <img src="assets/images/logo.png" alt="TraceAndTrust" class="w-12 h-12 object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="text-white font-bold text-2xl hidden">T</span>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-800">Bon retour !</h2>
+        <p class="text-gray-500 mt-2">Connectez-vous à votre compte</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+        <!-- Email Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Adresse email</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
+                </path>
+              </svg>
+            </div>
+            <input type="email" formControlName="email" placeholder="vous@exemple.com"
+              class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-slate-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-sm font-medium text-slate-700">Mot de passe</label>
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-700 transition-colors">
+              Mot de passe oublié ?
+            </a>
+          </div>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                </path>
+              </svg>
+            </div>
+            <input type="password" formControlName="password" placeholder="••••••••"
+              class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-slate-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+          </div>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="flex items-center">
+          <input type="checkbox" id="remember"
+            class="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500/20">
+          <label for="remember" class="ml-2 text-sm text-gray-600">
+            Se souvenir de moi
+          </label>
+        </div>
+
+        <!-- Error Message -->
+        <p *ngIf="error"
+          class="text-sm text-center py-3 px-4 rounded-xl text-red-600 bg-red-50 border border-red-100 flex items-center justify-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {{ error }}
+        </p>
+
+        <!-- Submit Button -->
+        <button type="submit" [disabled]="loginForm.invalid || loading"
+          class="w-full py-3.5 px-6 text-base font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-xl shadow-button hover:shadow-button-hover btn-ripple transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+          <span *ngIf="loading"
+            class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+          {{ loading ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-200"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-4 bg-white text-gray-500">ou</span>
+        </div>
+      </div>
+
+      <!-- Register Link -->
+      <p class="text-center text-gray-600">
+        Pas encore de compte ?
+        <a routerLink="/register" class="font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+          Créer un compte
+        </a>
+      </p>
+
     </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
-      <input type="password" formControlName="password"
-        class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50">
+
+    <!-- Security Badge -->
+    <div class="flex items-center justify-center mt-6 text-xs text-gray-500">
+      <svg class="w-4 h-4 mr-1.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+        </path>
+      </svg>
+      Connexion sécurisée par SSL
     </div>
-    <p *ngIf="error" class="text-red-500 text-sm text-center">{{ error }}</p>
-    <button type="submit" [disabled]="loginForm.invalid || loading"
-      class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50">
-      {{ loading ? 'Chargement...' : 'Se connecter' }}
-    </button>
-  </form>
-  <p class="mt-6 text-center text-sm text-gray-600">
-    Pas encore de compte ? <a routerLink="/register" class="text-blue-600 font-semibold">S'inscrire</a>
-  </p>
+
+  </div>
 </div>

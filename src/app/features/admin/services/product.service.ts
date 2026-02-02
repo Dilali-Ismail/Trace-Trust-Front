@@ -33,10 +33,10 @@ export class ProductService {
   }
 
   getAllCategories(): Observable<string[]> {
-  return this.http.get<string[]>(`${this.apiUrl}/categories`);
-}
+    return this.http.get<string[]>(`${this.apiUrl}/categories`);
+  }
 
-getByCategory(category: string): Observable<Product[]> {
-  return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
-}
+  getByCategory(category: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
+  }
 }

@@ -1,54 +1,137 @@
-<div class="max-w-5xl mx-auto p-10 space-y-8">
-  <h1 class="text-4xl font-black">Mes Expéditions 📦</h1>
-  <div class="grid gap-4">
+<!-- 🎨 Premium Light Mode Client Shipments -->
+<div class="max-w-6xl mx-auto p-8 space-y-6">
+
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-slate-800">Mes <span class="text-blue-600">Expéditions</span></h1>
+    <p class="text-gray-500 mt-1">Suivez l'état de vos livraisons en temps réel</p>
+  </div>
+
+  <!-- Shipments List -->
+  <div class="space-y-4">
     @for (shipment of shipments(); track shipment.id) {
-    <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
-      <div class="p-6 flex items-center justify-between">
-        <div>
-          <p class="text-[10px] font-mono text-gray-400">Tracking: {{ shipment.trackingNumber }}</p>
-          <p class="font-bold text-lg text-blue-600">{{ shipment.carrierName }}</p>
-          <p class="text-[10px] text-gray-500">Commande #{{ shipment.salesOrderId.substring(0,8) }}</p>
+    <!-- Shipment Card -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden">
+      <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+        <!-- Shipment Info -->
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center">
+            <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0">
+              </path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500">Tracking</p>
+            <p class="text-lg font-bold text-blue-600 font-mono">{{ shipment.trackingNumber }}</p>
+            <p class="text-xs text-gray-500 mt-1">
+              {{ shipment.carrierName }} • Commande #{{ shipment.salesOrderId.substring(0,8) }}
+            </p>
+          </div>
         </div>
-        <div class="flex items-center gap-4">
-          <span [class]="'px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ' + getStatusBadgeClass(shipment.status)">
+
+        <!-- Status & Toggle -->
+        <div class="flex items-center gap-3">
+          <!-- Status Badge -->
+          <span [ngClass]="getStatusBadgeClass(shipment.status)"
+            class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full">
+            <span class="w-1.5 h-1.5 rounded-full mr-1.5" [ngClass]="{
+                'bg-blue-500': shipment.status === 'PLANNED',
+                'bg-orange-500 animate-pulse': shipment.status === 'IN_TRANSIT',
+                'bg-emerald-500': shipment.status === 'DELIVERED'
+              }"></span>
             {{ shipment.status }}
           </span>
+
+          <!-- Toggle Details -->
           <button (click)="toggleDetails(shipment.id)"
-                  class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition">
-            {{ expandedShipmentId() === shipment.id ? '🔼' : '👁️' }}
+            class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              @if (expandedShipmentId() === shipment.id) {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+              } @else {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              }
+            </svg>
           </button>
         </div>
       </div>
-      <!-- Timeline Détails -->
+
+      <!-- Timeline Details -->
       @if (expandedShipmentId() === shipment.id) {
-      <div class="bg-gray-50/50 p-6 border-t border-gray-100">
-        <h3 class="text-[10px] font-black uppercase text-gray-400 mb-4 tracking-widest">Timeline</h3>
-        <div class="space-y-3">
-          <!-- PLANNED -->
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">1</span>
-            <div>
-              <p class="font-bold text-sm text-gray-700">Planifiée</p>
-              <p class="text-[10px] text-gray-400">{{ shipment.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      <div class="bg-gray-50 border-t border-gray-100 p-6 animate-in slide-in-from-top-2 duration-300">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-6">Suivi de livraison</h3>
+
+        <!-- Timeline -->
+        <div class="relative space-y-6">
+          <!-- Connecting Line -->
+          <div class="absolute left-4 top-4 bottom-4 w-0.5 bg-gray-200"></div>
+
+          <!-- Step 1: Planned -->
+          <div class="relative flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-button z-10">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="flex-1 bg-white border border-gray-100 rounded-xl p-4">
+              <p class="font-semibold text-slate-800">Planifiée</p>
+              <p class="text-sm text-gray-500 mt-1">{{ shipment.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
             </div>
           </div>
-          <!-- IN_TRANSIT -->
+
+          <!-- Step 2: In Transit -->
           @if (shipment.shippedAt) {
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-bold">2</span>
-            <div>
-              <p class="font-bold text-sm text-gray-700">Expédiée</p>
-              <p class="text-[10px] text-gray-400">{{ shipment.shippedAt | date:'dd/MM/yyyy HH:mm' }}</p>
+          <div class="relative flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-button z-10">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="flex-1 bg-white border border-gray-100 rounded-xl p-4">
+              <p class="font-semibold text-slate-800">Expédiée</p>
+              <p class="text-sm text-gray-500 mt-1">{{ shipment.shippedAt | date:'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          </div>
+          } @else {
+          <div class="relative flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xs font-bold z-10">
+              2
+            </div>
+            <div class="flex-1 bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <p class="font-semibold text-gray-400">En attente d'expédition</p>
             </div>
           </div>
           }
-          <!-- DELIVERED -->
+
+          <!-- Step 3: Delivered -->
           @if (shipment.deliveredAt) {
-          <div class="flex items-center gap-3">
-            <span class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">3</span>
-            <div>
-              <p class="font-bold text-sm text-gray-700">Livrée</p>
-              <p class="text-[10px] text-gray-400">{{ shipment.deliveredAt | date:'dd/MM/yyyy HH:mm' }}</p>
+          <div class="relative flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-button z-10">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="flex-1 bg-white border border-gray-100 rounded-xl p-4">
+              <p class="font-semibold text-slate-800">Livrée</p>
+              <p class="text-sm text-gray-500 mt-1">{{ shipment.deliveredAt | date:'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          </div>
+          } @else {
+          <div class="relative flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xs font-bold z-10">
+              3
+            </div>
+            <div class="flex-1 bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <p class="font-semibold text-gray-400">En attente de livraison</p>
             </div>
           </div>
           }
@@ -57,9 +140,21 @@
       }
     </div>
     } @empty {
-    <div class="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-100">
-      <p class="text-gray-400 font-bold italic">Aucune expédition pour le moment.</p>
+    <!-- Empty State -->
+    <div class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-20">
+      <div class="flex flex-col items-center justify-center">
+        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0">
+            </path>
+          </svg>
+        </div>
+        <p class="text-gray-500 font-medium">Aucune expédition pour le moment</p>
+      </div>
     </div>
     }
   </div>
+
 </div>

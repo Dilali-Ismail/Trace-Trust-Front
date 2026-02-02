@@ -1,0 +1,70 @@
+<div class="p-8 space-y-6 max-w-5xl mx-auto">
+  <h1 class="text-3xl font-black">Nouvelle Commande d'Achat 📋</h1>
+  <form [formGroup]="poForm" (ngSubmit)="onSubmit()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+
+    <!-- Fournisseur -->
+    <div class="space-y-2">
+      <label class="text-sm font-bold text-gray-700">Fournisseur</label>
+      <select formControlName="supplierId" class="w-full bg-gray-50 border-0 rounded-xl p-3">
+        <option value="">Sélectionner un fournisseur...</option>
+        @for (s of suppliers(); track s.id) {
+          <option [value]="s.id">{{ s.name }}</option>
+        }
+      </select>
+    </div>
+    <!-- Lignes de commande -->
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-sm font-black uppercase text-gray-400">Articles</h3>
+        <button type="button" (click)="addLine()"
+                class="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-green-700">
+          + Ajouter
+        </button>
+      </div>
+      <div formArrayName="orderLines" class="space-y-3">
+        @for (line of orderLines.controls; track $index) {
+        <div [formGroupName]="$index" class="grid grid-cols-12 gap-3 items-end bg-gray-50 p-4 rounded-xl">
+          <!-- Produit -->
+          <div class="col-span-5 space-y-1">
+            <label class="text-[10px] font-black uppercase text-gray-400">Produit</label>
+            <select formControlName="productId" class="w-full bg-white border-0 rounded-lg p-2 text-sm">
+              <option value="">Choisir...</option>
+              @for (p of products(); track p.id) {
+                <option [value]="p.id">{{ p.name }} ({{ p.sku }})</option>
+              }
+            </select>
+          </div>
+          <!-- Quantité -->
+          <div class="col-span-3 space-y-1">
+            <label class="text-[10px] font-black uppercase text-gray-400">Quantité</label>
+            <input type="number" formControlName="quantityOrdered" class="w-full bg-white border-0 rounded-lg p-2 text-sm">
+          </div>
+          <!-- Prix unitaire -->
+          <div class="col-span-3 space-y-1">
+            <label class="text-[10px] font-black uppercase text-gray-400">Prix Unit.</label>
+            <input type="number" formControlName="unitPrice" class="w-full bg-white border-0 rounded-lg p-2 text-sm">
+          </div>
+          <!-- Supprimer -->
+          <div class="col-span-1">
+            <button type="button" (click)="removeLine($index)"
+                    class="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600">
+              🗑️
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    <!-- Actions -->
+    <div class="flex gap-4 justify-end">
+      <button type="button" (click)="cancel()"
+              class="bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-300">
+        Annuler
+      </button>
+      <button type="submit" [disabled]="poForm.invalid"
+              class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 disabled:opacity-50">
+        Créer la Commande
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,36 +1,88 @@
-<div class="max-w-4xl mx-auto p-12">
-  <h1 class="text-4xl font-black mb-8">Valider mon Panier 🛒</h1>
+<!-- 🎨 Premium Light Mode Checkout -->
+<div class="max-w-4xl mx-auto p-8 space-y-6">
 
-  <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-    <div class="divide-y divide-gray-50">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-slate-800">Valider mon <span class="text-blue-600">Panier</span></h1>
+    <p class="text-gray-500 mt-1">Vérifiez et confirmez votre commande</p>
+  </div>
+
+  <!-- Cart Items Card -->
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden">
+    <div class="p-6 divide-y divide-gray-100">
       @for (item of cart.items(); track item.productId) {
-      <div class="py-4 flex justify-between items-center">
-        <div>
-          <p class="font-bold text-gray-800">{{ item.productName }}</p>
-          <p class="text-xs text-gray-400 font-mono">{{ item.unitPrice }} DH x {{ item.quantity }}</p>
-        </div>
-        <div class="flex items-center gap-6">
-          <div class="flex items-center bg-gray-50 rounded-2xl p-1 border border-gray-100 italic">
-            <button (click)="decrement(item.productId, item.quantity)"
-              class="w-10 h-10 flex items-center justify-center hover:bg-white hover:shadow-sm rounded-xl transition text-gray-500 font-bold">-</button>
-            <span class="w-12 text-center font-black text-slate-900">{{ item.quantity }}</span>
-            <button (click)="increment(item.productId, item.quantity)"
-              class="w-10 h-10 flex items-center justify-center hover:bg-white hover:shadow-sm rounded-xl transition text-gray-500 font-bold">+</button>
+      <div class="py-4 first:pt-0 last:pb-0 flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+        <!-- Product Info -->
+        <div class="flex items-center space-x-4">
+          <div class="w-14 h-14 bg-violet-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-7 h-7 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
           </div>
-          <span class="font-black text-slate-900 min-w-[80px] text-right">{{ item.unitPrice * item.quantity }} DH</span>
+          <div>
+            <p class="font-semibold text-slate-800">{{ item.productName }}</p>
+            <p class="text-sm text-gray-500">{{ item.unitPrice }} DH × {{ item.quantity }}</p>
+          </div>
+        </div>
+
+        <!-- Quantity Controls & Price -->
+        <div class="flex items-center gap-6">
+          <!-- Quantity Stepper -->
+          <div class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+            <button (click)="decrement(item.productId, item.quantity)"
+              class="w-10 h-10 flex items-center justify-center hover:bg-white hover:text-blue-600 transition-colors text-gray-600 font-semibold">
+              −
+            </button>
+            <span class="w-12 text-center font-bold text-slate-800">{{ item.quantity }}</span>
+            <button (click)="increment(item.productId, item.quantity)"
+              class="w-10 h-10 flex items-center justify-center hover:bg-white hover:text-blue-600 transition-colors text-gray-600 font-semibold">
+              +
+            </button>
+          </div>
+
+          <!-- Item Total -->
+          <span class="font-bold text-slate-800 min-w-[100px] text-right">{{ item.unitPrice * item.quantity }} DH</span>
         </div>
       </div>
       }
     </div>
-    <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
+
+    <!-- Total Section -->
+    <div
+      class="bg-gray-50 border-t border-gray-100 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <p class="text-xs text-gray-400 uppercase font-black tracking-widest">Total à payer</p>
-        <p class="text-3xl font-black text-blue-600">{{ cart.total() }} DH</p>
+        <p class="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-1">Total à payer</p>
+        <p class="text-3xl font-bold text-blue-600">{{ cart.total() }} DH</p>
       </div>
+
+      <!-- Confirm Button -->
       <button (click)="submitOrder()" [disabled]="cart.count() === 0"
-        class="bg-slate-900 text-white px-10 py-4 rounded-2xl font-black hover:bg-blue-600 transition shadow-xl disabled:opacity-20 active:scale-95">
+        class="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-lg font-bold rounded-xl shadow-button hover:shadow-button-hover transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95">
         Confirmer la Commande
       </button>
     </div>
   </div>
+
+  <!-- Cart Empty State -->
+  @if (cart.count() === 0) {
+  <div class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-20">
+    <div class="flex flex-col items-center justify-center">
+      <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+          </path>
+        </svg>
+      </div>
+      <p class="text-gray-500 font-medium mb-4">Votre panier est vide</p>
+      <a routerLink="/"
+        class="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl shadow-button transition-all duration-300">
+        Continuer mes achats
+      </a>
+    </div>
+  </div>
+  }
+
 </div>

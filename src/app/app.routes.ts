@@ -27,7 +27,15 @@ export const routes: Routes = [
           { path: 'warehouses/new', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent) },
           { path: 'warehouses/edit/:id', loadComponent: () => import('./features/admin/warehouses/warehouse-form/warehouse-form.component').then(m => m.WarehouseFormComponent) },
           { path: 'users', loadComponent: () => import('./features/admin/users/user-list/user-list.component').then(m => m.UserListComponent) },
-          { path: 'users/new', loadComponent: () => import('./features/admin/users/user-form/user-form.component').then(m => m.UserFormComponent) }
+          { path: 'users/new', loadComponent: () => import('./features/admin/users/user-form/user-form.component').then(m => m.UserFormComponent) },
+          { path: 'purchase-orders', loadComponent: () => import('./features/admin/purchase-orders/purchase-order-list/purchase-order-list.component').then(m => m.PurchaseOrderListComponent) },
+          { path: 'purchase-orders/create', loadComponent: () => import('./features/admin/purchase-orders/purchase-order-create/purchase-order-create.component').then(m => m.PurchaseOrderCreateComponent) },
+          { path: 'purchase-orders/:id', loadComponent: () => import('./features/admin/purchase-orders/purchase-order-detail/purchase-order-detail.component').then(m => m.PurchaseOrderDetailComponent) },
+
+          // 🆕 Routes Suppliers (CRUD)
+          { path: 'suppliers', loadComponent: () => import('./features/admin/supplier-list/supplier-list.component').then(m => m.SupplierListComponent) },
+          { path: 'suppliers/new', loadComponent: () => import('./features/admin/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent) },
+          { path: 'suppliers/edit/:id', loadComponent: () => import('./features/admin/supplier-form/supplier-form.component').then(m => m.SupplierFormComponent) }
         ]
       },
       {
@@ -40,7 +48,7 @@ export const routes: Routes = [
           { path: 'inventory', loadComponent: () => import('./features/warehouse/inventory/inventory-list/inventory-list.component').then(m => m.InventoryListComponent) },
           { path: 'movements', loadComponent: () => import('./features/warehouse/movement/movement-list/movement-list.component').then(m => m.MovementListComponent) },
           { path: 'orders', loadComponent: () => import('./features/warehouse/order-management/order-management.component').then(m => m.OrderManagementComponent) },
-            { path: 'shipments', loadComponent: () => import('./features/warehouse/shipment-management/shipment-management.component').then(m => m.ShipmentManagementComponent) }
+          { path: 'shipments', loadComponent: () => import('./features/warehouse/shipment-management/shipment-management.component').then(m => m.ShipmentManagementComponent) }
         ]
       },
       {

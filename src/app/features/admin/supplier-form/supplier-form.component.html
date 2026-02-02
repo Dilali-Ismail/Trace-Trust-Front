@@ -1,0 +1,102 @@
+<!-- 
+  🎓 CONCEPT: Reactive Forms Template
+-->
+<div class="max-w-2xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div>
+        <h1 class="text-2xl font-bold text-slate-800">
+            @if (isEditMode()) {
+            Modifier le <span class="text-blue-600">Fournisseur</span>
+            } @else {
+            Nouveau <span class="text-blue-600">Fournisseur</span>
+            }
+        </h1>
+        <p class="text-gray-500 mt-1">
+            @if (isEditMode()) {
+            Modifiez les informations du fournisseur
+            } @else {
+            Ajoutez un nouveau partenaire commercial
+            }
+        </p>
+    </div>
+
+    <!-- Error Message -->
+    @if (errorMessage()) {
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        {{ errorMessage() }}
+    </div>
+    }
+
+    <!-- Loading State -->
+    @if (loading() && isEditMode()) {
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12">
+        <div class="flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p class="text-gray-500 mt-4">Chargement...</p>
+        </div>
+    </div>
+    }
+
+    <!-- Form -->
+    @if (!loading() || !isEditMode()) {
+    <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()"
+        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-6">
+
+        <!-- Name Field -->
+        <div class="space-y-2">
+            <label for="name" class="block text-sm font-semibold text-gray-700">
+                Nom du fournisseur <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="name" formControlName="name" placeholder="Ex: Acme Corporation"
+                [class]="isFieldInvalid('name') ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-blue-500'"
+                class="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all">
+
+            @if (isFieldInvalid('name')) {
+            <p class="text-red-500 text-sm">{{ getFieldError('name') }}</p>
+            }
+        </div>
+
+        <!-- Contact Field -->
+        <div class="space-y-2">
+            <label for="contactInfo" class="block text-sm font-semibold text-gray-700">
+                Informations de contact <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="contactInfo" formControlName="contactInfo"
+                placeholder="Ex: contact@acme.com ou +212 6 00 00 00 00"
+                [class]="isFieldInvalid('contactInfo') ? 'border-red-300 focus:border-red-500' : 'border-gray-200 focus:border-blue-500'"
+                class="w-full px-4 py-3 rounded-xl border-2 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all">
+
+            @if (isFieldInvalid('contactInfo')) {
+            <p class="text-red-500 text-sm">{{ getFieldError('contactInfo') }}</p>
+            }
+        </div>
+
+        <!-- Actions Buttons -->
+        <div class="flex items-center justify-end space-x-4 pt-4 border-t border-gray-100">
+            <button type="button" (click)="cancel()"
+                class="px-6 py-3 text-gray-600 hover:text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition-all">
+                Annuler
+            </button>
+
+            <button type="submit" [disabled]="loading()"
+                class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl shadow-lg transition-all disabled:opacity-50 flex items-center">
+                @if (loading()) {
+                <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                Enregistrement...
+                } @else {
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                @if (isEditMode()) { Modifier } @else { Créer }
+                }
+            </button>
+        </div>
+    </form>
+    }
+
+</div>

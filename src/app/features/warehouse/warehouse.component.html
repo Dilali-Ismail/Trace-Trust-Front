@@ -1,66 +1,125 @@
-<div class="flex h-screen bg-gray-50 font-sans">
+<!-- 🎨 Premium 2026 Light Mode Warehouse Layout -->
+<div class="flex h-screen bg-gray-50">
 
-  <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-2xl">
-    <div class="p-6">
-      <h2 class="text-xl font-black tracking-tighter text-blue-400">T&T <span class="text-white">Logistics</span></h2>
-      <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-1">Espace Manager</p>
-    </div>
-    <nav class="flex-1 px-4 space-y-2 mt-4 text-sm font-medium">
+    <!-- 🎛️ SIDEBAR -->
+    <aside class="w-72 bg-white border-r border-gray-200 flex flex-col shadow-sm">
 
-      <a routerLink="/warehouse/dashboard" routerLinkActive="bg-slate-800 text-blue-400"
-        class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
-        <span class="mr-3 group-hover:scale-110 transition">🏠</span> Tableau de bord
-      </a>
-
-      <a routerLink="/warehouse/inventory" routerLinkActive="bg-slate-800 text-blue-400"
-        class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
-        <span class="mr-3 group-hover:scale-110 transition">📋</span> Mon Inventaire
-      </a>
-
-      <a routerLink="/warehouse/movements" routerLinkActive="bg-slate-800 text-blue-400"
-        class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
-        <span class="mr-3 group-hover:scale-110 transition">🔄</span> Flux de Stock
-      </a>
-
-      <a routerLink="/warehouse/orders" routerLinkActive="bg-slate-800 text-blue-400"
-        class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
-        <span class="mr-3 group-hover:scale-110 transition">📦</span> Traitement Commandes
-      </a>
-
-      <a routerLink="/warehouse/shipments" routerLinkActive="bg-slate-800 text-blue-400"
-        class="flex items-center p-3 rounded-lg hover:bg-slate-800 transition group">
-        <span class="mr-3 group-hover:scale-110 transition">🚚</span> Expéditions
-      </a>
-    </nav>
-
-    <div class="p-4 border-t border-slate-800">
-      <button (click)="logout()"
-        class="w-full flex items-center p-3 text-red-400 hover:bg-red-500/10 rounded-lg transition">
-        <span class="mr-3">🚪</span> Déconnexion
-      </button>
-    </div>
-  </aside>
-
-  <main class="flex-1 flex flex-col overflow-hidden">
-    <!-- Header -->
-    <header class="bg-white border-b border-gray-100 p-4 flex justify-between items-center px-8">
-      <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
-        Dépôt : <span class="text-gray-800">Casablanca Hub</span>
-      </div>
-      <div class="flex items-center space-x-3">
-        <div class="text-right">
-          <p class="text-sm font-black text-gray-800 leading-none">{{ authService.userName() }}</p>
-          <p class="text-[10px] text-blue-600 font-bold uppercase">Gestionnaire</p>
+        <!-- Logo Section -->
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center space-x-3">
+                <div
+                    class="w-10 h-10 bg-gradient-to-br from-blue-500 to-violet-500 rounded-xl shadow-button flex items-center justify-center">
+                    <img src="assets/images/logo.png" alt="Logo" class="w-7 h-7 object-contain"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="text-white font-bold text-lg hidden">T</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800">TraceAndTrust</h1>
+                    <p class="text-xs text-gray-500">Warehouse Manager</p>
+                </div>
+            </div>
         </div>
-        <div
-          class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs shadow-inner">
-          {{ authService.userName()?.charAt(0) }}
+
+        <!-- Navigation -->
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            <a routerLink="/warehouse/dashboard" routerLinkActive="bg-blue-50 text-blue-600 border-blue-500"
+                class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-all duration-200 border-l-4 border-transparent group">
+                <svg class="w-5 h-5 mr-3 text-gray-400 group-[.active]:text-blue-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+                <span class="font-medium">Tableau de bord</span>
+            </a>
+
+            <a routerLink="/warehouse/inventory" routerLinkActive="bg-blue-50 text-blue-600 border-blue-500"
+                class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-all duration-200 border-l-4 border-transparent group">
+                <svg class="w-5 h-5 mr-3 text-gray-400 group-[.active]:text-blue-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                    </path>
+                </svg>
+                <span class="font-medium">Mon Inventaire</span>
+            </a>
+
+            <a routerLink="/warehouse/movements" routerLinkActive="bg-blue-50 text-blue-600 border-blue-500"
+                class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-all duration-200 border-l-4 border-transparent group">
+                <svg class="w-5 h-5 mr-3 text-gray-400 group-[.active]:text-blue-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                </svg>
+                <span class="font-medium">Flux de Stock</span>
+            </a>
+
+            <a routerLink="/warehouse/orders" routerLinkActive="bg-blue-50 text-blue-600 border-blue-500"
+                class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-all duration-200 border-l-4 border-transparent group">
+                <svg class="w-5 h-5 mr-3 text-gray-400 group-[.active]:text-blue-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <span class="font-medium">Traitement Commandes</span>
+            </a>
+
+            <a routerLink="/warehouse/shipments" routerLinkActive="bg-blue-50 text-blue-600 border-blue-500"
+                class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-all duration-200 border-l-4 border-transparent group">
+                <svg class="w-5 h-5 mr-3 text-gray-400 group-[.active]:text-blue-600" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0">
+                    </path>
+                </svg>
+                <span class="font-medium">Expéditions</span>
+            </a>
+        </nav>
+
+        <!-- User Section -->
+        <div class="p-4 border-t border-gray-100">
+            <button (click)="logout()"
+                class="w-full flex items-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 border border-red-200 hover:border-red-300 group">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                    </path>
+                </svg>
+                <span class="font-medium">Déconnexion</span>
+            </button>
         </div>
-      </div>
-    </header>
-    <!-- Zone de rendu des pages enfants -->
-    <div class="flex-1 overflow-y-auto p-8">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
+    </aside>
+
+    <!-- 🏠 MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm">
+            <div>
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Dépôt</p>
+                <p class="text-sm font-bold text-slate-800">Casablanca Hub</p>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <!-- User Info -->
+                <div class="flex items-center space-x-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-slate-800">{{ authService.userName() }}</p>
+                        <p class="text-xs text-blue-600">Gestionnaire</p>
+                    </div>
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-blue-500 to-violet-500 rounded-full flex items-center justify-center text-white font-semibold shadow-button">
+                        {{ authService.userName()?.charAt(0)?.toUpperCase() }}
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-8 bg-gray-50">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+
 </div>

@@ -1,80 +1,116 @@
+<!-- 🎨 Premium Light Mode Inventory List -->
 <div class="space-y-6">
-  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <h1 class="text-3xl font-black text-gray-800">Inventaire <span class="text-blue-600">Global</span></h1>
 
-    <!-- dropdown de sélection d'entrepôt -->
+  <!-- Header with Warehouse Selector -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-800">Inventaire <span class="text-blue-600">Global</span></h1>
+      <p class="text-gray-500 mt-1">Vue d'ensemble de tous les stocks</p>
+    </div>
+
+    <!-- Warehouse Selector -->
     <select (change)="loadInventory()" [(ngModel)]="selectedWarehouseId"
-      class="bg-white border-gray-200 rounded-xl px-4 py-2 text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-500">
+      class="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-medium shadow-soft outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
       <option value="">Tous les entrepôts</option>
       @for (w of warehouses(); track w.id) {
       <option [value]="w.id">{{ w.name }}</option>
       }
     </select>
   </div>
-  <!-- Barre de recherche SKU -->
-  <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par SKU..."
-      class="w-full bg-gray-50 border-0 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500">
+
+  <!-- Search Bar -->
+  <div class="bg-white p-4 rounded-2xl shadow-soft border border-gray-100">
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher par SKU..."
+        class="w-full pl-12 pr-4 py-3 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+    </div>
   </div>
-  <!-- Tableau des stocks -->
-  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden text-gray-700">
-    <table class="w-full text-left font-medium">
-      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase tracking-widest font-black border-b border-gray-100">
-        <tr>
-          <th class="px-6 py-4">Produit / SKU</th>
-          <th class="px-6 py-4">Entrepôt</th>
-          <th class="px-6 py-4 text-center">Quantité Hand</th>
-          <th class="px-6 py-4 text-center">Réservé</th>
-          <th class="px-6 py-4 text-center">Historique</th>
-          <th class="px-6 py-4 text-right">Disponible</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-100">
-        @for (item of filteredInventory(); track item.inventoryId) {
-        <tr class="hover:bg-blue-50/50 transition">
-          <td class="px-6 py-4">
-            <div class="font-bold text-gray-900">
-              {{ productNames().get(item.productSku) || 'Chargement...' }}
-            </div>
-            <div class="text-[10px] font-mono text-gray-400 uppercase tracking-tighter">{{ item.productSku }}</div>
-          </td>
-          <td class="px-6 py-4">
-            <span class="text-[10px] bg-slate-100 px-2 py-1 rounded font-black uppercase text-slate-500">{{
-              item.warehouseCode }}</span>
-          </td>
-          <td class="px-6 py-4 text-center font-bold text-gray-800">{{ item.quantity_hand }}</td>
-          <td class="px-6 py-4 text-center">
-            <span class="text-orange-500 font-bold bg-orange-50 px-2 py-1 rounded-md text-xs">
-              {{ item.quantity_reserved }}
-            </span>
-          </td>
-          <td class="px-6 py-4 text-center">
-            <a [routerLink]="['/warehouse/movements']"
-              [queryParams]="{ warehouseId: item.warehouseId, productId: item.productId }"
-              class="inline-flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white rounded-full transition-all shadow-sm"
-              title="Historique détaillé">
-              <span class="text-sm">📊</span>
-            </a>
-          </td>
-          <td class="px-6 py-4 text-right">
-            <span
-              [class]="item.available <= 0 ? 'bg-rose-50 text-rose-600 ring-1 ring-rose-100' : 'bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100'"
-              class="px-3 py-1.5 rounded-lg font-black text-sm shadow-sm inline-block min-w-[3rem] text-center">
-              {{ item.available }}
-            </span>
-          </td>
-        </tr>
-        } @empty {
-        <tr>
-          <td colspan="6" class="px-6 py-20 text-center text-gray-400 italic font-medium">
-            <div class="flex flex-col items-center">
-              <span class="text-4xl mb-2">📦</span>
-              Aucun stock répertorié pour le moment.
-            </div>
-          </td>
-        </tr>
-        }
-      </tbody>
-    </table>
+
+  <!-- Inventory Table -->
+  <div class="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50 border-b border-gray-100">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Produit / SKU
+            </th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Entrepôt</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">En Stock</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Réservé</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Historique
+            </th>
+            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Disponible
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          @for (item of filteredInventory(); track item.inventoryId) {
+          <tr class="hover:bg-blue-50/30 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-medium text-slate-800">
+                {{ productNames().get(item.productSku) || 'Chargement...' }}
+              </div>
+              <div class="text-xs font-mono text-blue-600 mt-1">{{ item.productSku }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center px-3 py-1 bg-violet-50 text-violet-600 text-xs font-semibold rounded-full">
+                {{ item.warehouseCode }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <span class="font-semibold text-slate-800">{{ item.quantity_hand }}</span>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <span
+                class="inline-flex items-center px-3 py-1 bg-orange-50 text-orange-600 text-xs font-semibold rounded-full">
+                {{ item.quantity_reserved }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <a [routerLink]="['/warehouse/movements']"
+                [queryParams]="{ warehouseId: item.warehouseId, productId: item.productId }"
+                class="inline-flex items-center justify-center w-9 h-9 text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm"
+                title="Historique détaillé">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                  </path>
+                </svg>
+              </a>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <span
+                [ngClass]="item.available <= 0 ? 'bg-red-50 text-red-600 border-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'"
+                class="inline-flex items-center px-3 py-1.5 text-sm font-bold rounded-xl border">
+                {{ item.available }}
+              </span>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="px-6 py-20 text-center">
+              <div class="flex flex-col items-center justify-center">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                  </svg>
+                </div>
+                <p class="text-gray-500 font-medium">Aucun stock répertorié pour le moment.</p>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </div>

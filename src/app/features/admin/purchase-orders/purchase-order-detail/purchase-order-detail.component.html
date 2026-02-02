@@ -1,0 +1,86 @@
+<div class="p-8 space-y-6 max-w-6xl mx-auto">
+  @if (order(); as po) {
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-black">Commande {{ po.supplierName }}</h1>
+      <p class="text-sm text-gray-400">Créée le {{ po.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+    </div>
+    <span [class]="'px-4 py-2 rounded-full text-xs font-black uppercase ' +
+                   (po.status === 'RECEIVED' ? 'bg-green-50 text-green-600' :
+                    po.status === 'PARTIALLY_RECEIVED' ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600')">
+      {{ po.status }}
+    </span>
+  </div>
+  <!-- Articles commandés -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <h3 class="bg-gray-50 px-6 py-4 text-sm font-black uppercase text-gray-400">Articles</h3>
+    <table class="w-full">
+      <thead class="bg-gray-50 text-gray-400 text-[10px] uppercase">
+        <tr>
+          <th class="px-6 py-3 text-left">Produit</th>
+          <th class="px-6 py-3 text-center">Commandé</th>
+          <th class="px-6 py-3 text-center">Reçu</th>
+          <th class="px-6 py-3 text-center">Restant</th>
+          <th class="px-6 py-3 text-right">Prix Unit.</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (line of po.orderLines; track line.productId) {
+        <tr>
+          <td class="px-6 py-4">
+            <p class="font-bold text-gray-700">{{ line.productName }}</p>
+            <p class="text-xs text-gray-400">{{ line.productSku }}</p>
+          </td>
+          <td class="px-6 py-4 text-center font-bold">{{ line.quantityOrdered }}</td>
+          <td class="px-6 py-4 text-center font-bold text-green-600">{{ line.quantityReceived }}</td>
+          <td class="px-6 py-4 text-center font-bold text-orange-600">{{ getRemainingQty(line) }}</td>
+          <td class="px-6 py-4 text-right text-sm text-gray-600">{{ line.unitPrice }} DH</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <!-- Réception -->
+  @if (po.status !== 'RECEIVED') {
+  <form [formGroup]="receiveForm" (ngSubmit)="onReceive()" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+    <h3 class="text-sm font-black uppercase text-gray-400">Réceptionner des articles</h3>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="space-y-1">
+        <label class="text-xs font-bold text-gray-700">Entrepôt</label>
+        <select formControlName="warehouseId" class="w-full bg-gray-50 border-0 rounded-xl p-3">
+          <option value="">Sélectionner...</option>
+          @for (w of warehouses(); track w.id) {
+            <option [value]="w.id">{{ w.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="space-y-1">
+        <label class="text-xs font-bold text-gray-700">Référence (BON)</label>
+        <input formControlName="referenceDocument" class="w-full bg-gray-50 border-0 rounded-xl p-3">
+      </div>
+    </div>
+    <div formArrayName="receivedLines" class="space-y-2">
+      @for (line of po.orderLines; track $index; let i = $index) {
+      <div [formGroupName]="i" class="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
+        <span class="text-sm font-bold">{{ line.productName }}</span>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-gray-400">Restant: {{ getRemainingQty(line) }}</span>
+          <input type="number" formControlName="quantityReceived"
+                 [max]="getRemainingQty(line)"
+                 class="w-20 bg-white border-0 rounded-lg p-2 text-sm">
+        </div>
+      </div>
+      }
+    </div>
+    <button type="submit" [disabled]="receiveForm.invalid"
+            class="w-full bg-green-600 text-white p-3 rounded-xl font-bold hover:bg-green-700 disabled:opacity-50">
+      Valider la Réception
+    </button>
+  </form>
+  }
+  <button (click)="goBack()" class="text-blue-600 hover:underline font-bold">
+    ← Retour à la liste
+  </button>
+  }
+</div>

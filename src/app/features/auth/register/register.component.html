@@ -1,41 +1,149 @@
-<div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md border border-gray-100">
-  <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Inscription</h2>
+<!-- 🎨 Premium 2026 Light Mode Register Page - E-commerce Style -->
+<div
+  class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-violet-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Nom complet</label>
-      <input type="text" formControlName="name"
-        class="mt-1 block w-full px-4 py-2 rounded-lg border-gray-300 bg-gray-50 focus:ring-blue-500">
-      <p *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
-        class="text-xs text-red-500 mt-1">Le nom est requis.</p>
+  <!-- Decorative elements -->
+  <div
+    class="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2">
+  </div>
+  <div
+    class="absolute bottom-0 left-0 w-64 h-64 bg-violet-100 rounded-full blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2">
+  </div>
+
+  <div class="relative w-full max-w-md">
+
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-card border border-gray-100 p-8 sm:p-10">
+
+      <!-- Logo & Header -->
+      <div class="text-center mb-8">
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-violet-500 rounded-2xl shadow-button mb-4">
+          <img src="assets/images/logo.png" alt="TraceAndTrust" class="w-12 h-12 object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="text-white font-bold text-2xl hidden">T</span>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-800">Créer un compte</h2>
+        <p class="text-gray-500 mt-2">Rejoignez TraceAndTrust aujourd'hui</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+        <!-- Name Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Nom complet</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+            </div>
+            <input type="text" formControlName="name" placeholder="Jean Dupont"
+              class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-slate-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+          </div>
+          <p *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+            class="text-xs text-red-500 mt-2 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Le nom est requis.
+          </p>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Adresse email</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
+                </path>
+              </svg>
+            </div>
+            <input type="email" formControlName="email" placeholder="vous@exemple.com"
+              class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-slate-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+          </div>
+          <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+            class="text-xs text-red-500 mt-2 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Adresse email invalide.
+          </p>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Mot de passe</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                </path>
+              </svg>
+            </div>
+            <input type="password" formControlName="password" placeholder="••••••••"
+              class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-slate-800 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
+          </div>
+          <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            class="text-xs text-red-500 mt-2 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Minimum 6 caractères requis.
+          </p>
+        </div>
+
+        <!-- Message -->
+        <p *ngIf="message" class="text-sm text-center py-3 px-4 rounded-xl" [ngClass]="message.includes('Erreur') || message.includes('Veuillez') 
+             ? 'text-red-600 bg-red-50 border border-red-100' 
+             : 'text-emerald-600 bg-emerald-50 border border-emerald-100'">
+          {{ message }}
+        </p>
+
+        <!-- Submit Button -->
+        <button type="submit" [disabled]="loading"
+          class="w-full py-3.5 px-6 text-base font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-xl shadow-button hover:shadow-button-hover btn-ripple transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+          <span *ngIf="loading"
+            class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+          {{ loading ? 'Création en cours...' : "Créer mon compte" }}
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="relative my-8">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-200"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-4 bg-white text-gray-500">ou</span>
+        </div>
+      </div>
+
+      <!-- Login Link -->
+      <p class="text-center text-gray-600">
+        Déjà un compte ?
+        <a routerLink="/login" class="font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+          Se connecter
+        </a>
+      </p>
+
     </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Email</label>
-      <input type="email" formControlName="email"
-        class="mt-1 block w-full px-4 py-2 rounded-lg border-gray-300 bg-gray-50 focus:ring-blue-500">
-      <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-        class="text-xs text-red-500 mt-1">Email invalide.</p>
-    </div>
+    <!-- Footer Text -->
+    <p class="text-center text-xs text-gray-500 mt-6">
+      En vous inscrivant, vous acceptez nos
+      <a href="#" class="text-blue-600 hover:underline">Conditions d'utilisation</a>
+      et notre
+      <a href="#" class="text-blue-600 hover:underline">Politique de confidentialité</a>.
+    </p>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
-      <input type="password" formControlName="password"
-        class="mt-1 block w-full px-4 py-2 rounded-lg border-gray-300 bg-gray-50 focus:ring-blue-500">
-      <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-        class="text-xs text-red-500 mt-1">Min. 6 caractères.</p>
-    </div>
-
-    <p *ngIf="message" class="text-center text-sm"
-      [ngClass]="message.includes('Erreur') || message.includes('Veuillez') ? 'text-red-500' : 'text-green-500'">{{
-      message }}</p>
-
-    <button type="submit" [disabled]="loading"
-      class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50">
-      {{ loading ? 'Enregistrement...' : "S'inscrire" }}
-    </button>
-  </form>
-  <p class="mt-6 text-center text-sm text-gray-600">
-    Déjà un compte ? <a routerLink="/login" class="text-blue-600 font-semibold">Se connecter</a>
-  </p>
+  </div>
 </div>
