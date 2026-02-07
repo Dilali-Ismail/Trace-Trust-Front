@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { Product } from '../../../core/models/product.models';
+import { Product, ProductQuery } from '../../../core/models/product.models';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -38,5 +38,23 @@ export class ProductService {
 
   getByCategory(category: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
+  }
+
+   list(query: ProductQuery): Observable<any> {
+    let params = new HttpParams()
+      .set('page', query.page.toString())
+      .set('size', query.size.toString())
+      .set('active', query.active.toString())
+      .set('sort', query.sort);
+    if (query.search) {
+      params = params.set('search', query.search);
+    }
+
+    if (query.category && query.category !== 'all') {
+      params = params.set('category', query.category); // Adapter selon votre API (categoryId? categoryName?)
+    }
+    // On attend une réponse paginée type Spring Data
+    // Interface: { content: Product[], totalElements: number, totalPages: number }
+    return this.http.get<any>(this.apiUrl, { params });
   }
 }
